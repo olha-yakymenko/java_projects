@@ -17,7 +17,7 @@ class SellerTest {
 
     @BeforeEach
     void setUp() {
-        seller = new Seller(0.2, false); // 20% marża
+        seller = new Seller(0.2, false); 
         necessityProduct = new Product("Chleb", Product.Type.NECESSITY, 2.0, 10);
         luxuryProduct = new Product("Telewizor", Product.Type.LUXURY, 1000.0, 2);
         buyer = new Buyer(1000.0, 100.0, 0.3);
@@ -31,7 +31,7 @@ class SellerTest {
         assertEquals(1, offers.size());
         ProductOffer offer = offers.get(0);
         assertEquals(necessityProduct, offer.getProduct());
-        assertEquals(2.0 * 1.2, offer.getPrice(), 0.001); // Cena = koszt produkcji * (1 + marża)
+        assertEquals(2.0 * 1.2, offer.getPrice(), 0.001); 
         assertEquals(50, offer.getAvailableQuantity());
     }
 
@@ -42,7 +42,7 @@ class SellerTest {
 
         assertTrue(result);
         assertEquals(40, seller.getOffers().get(0).getAvailableQuantity());
-        assertEquals(10 * (2.0 * 1.2 - 2.0), seller.getTotalProfit(), 0.001); // Zysk = ilość * (cena - koszt)
+        assertEquals(10 * (2.0 * 1.2 - 2.0), seller.getTotalProfit(), 0.001); 
     }
 
     @Test
@@ -64,7 +64,7 @@ class SellerTest {
     @Test
     void testPayInflationTax() {
         seller.addProductOffer(necessityProduct, 50);
-        seller.sellProduct(necessityProduct, 10, buyer); // Zysk = 10 * (2.4 - 2.0) = 4.0
+        seller.sellProduct(necessityProduct, 10, buyer);
 
         double initialProfit = seller.getTotalProfit();
 
@@ -76,10 +76,9 @@ class SellerTest {
         seller.addProductOffer(necessityProduct, 50);
         double initialPrice = seller.getOffers().get(0).getPrice();
 
-        seller.setProfitMargin(0.3); // Zmiana marży na 30%
+        seller.setProfitMargin(0.3); 
 
         assertEquals(0.3, seller.getProfitMargin(), 0.001);
-        // Cena powinna być przeliczona jako: koszt produkcji * (1 + nowa marża)
         assertEquals(necessityProduct.getProductionCost() * (1 + 0.3),
                 seller.getOffers().get(0).getPrice(),
                 0.001);

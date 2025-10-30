@@ -86,7 +86,6 @@ class MarketSimulationTest {
         }, "Symulacja powinna działać z minimalną liczbą uczestników");
     }
 
-    // --- DODATKOWE TESTY STABILIZACYJNE ---
 
     @Test
     void multipleBuyersShouldStabilizeOverTime() {

@@ -17,16 +17,16 @@ class BuyerTest {
 
     @BeforeEach
     void setUp() {
-        buyer = new Buyer(100.0, 50.0, 1.0); // budżet startowy, dochód, wrażliwość
+        buyer = new Buyer(100.0, 50.0, 1.0); 
         chleb = new Product("Chleb", Product.Type.NECESSITY, 2.0, 10);
         perfumy = new Product("Perfumy", Product.Type.LUXURY, 10.0, 3);
 
         buyer.addNeed(chleb, 10);
         buyer.addNeed(perfumy, 5);
 
-        seller = new Seller(0.5, false); // marża 50%, brak logowania
-        seller.addProductOffer(chleb, 20); // cena 3.0
-        seller.addProductOffer(perfumy, 10); // cena 15.0
+        seller = new Seller(0.5, false); 
+        seller.addProductOffer(chleb, 20); 
+        seller.addProductOffer(perfumy, 10);
 
         buyer.observeSellers(List.of(seller));
     }
@@ -43,7 +43,7 @@ class BuyerTest {
     @Test
     void testInitialBudgetAndIncomeUpdate() {
         assertEquals(100.0, buyer.getBudget());
-        buyer.makePurchaseDecisions(); // powinien kupić coś
+        buyer.makePurchaseDecisions(); 
         assertTrue(buyer.getBudget() <= 150.0);
     }
 
@@ -58,19 +58,17 @@ class BuyerTest {
     void testMakePurchaseLuxuryBudgetConstraint() {
         Product luksus = new Product("Zegarek", Product.Type.LUXURY, 40.0, 1);
         buyer.addNeed(luksus, 3);
-        seller.addProductOffer(luksus, 1); // cena = 60.0 przy 50% marży
+        seller.addProductOffer(luksus, 1); 
 
         buyer.makePurchaseDecisions();
 
-        // Budżet = 150 → 30% = 45 → Zegarek za 60 nie powinien być kupiony
         assertFalse(buyer.getPurchaseHistory().stream().anyMatch(log -> log.contains("Zegarek")));
     }
 
     @Test
     void testPurchaseOnPriceDrop() {
-        // Cena początkowa to 3.0 (dla chleba)
-        ProductOffer cheapOffer = new ProductOffer(chleb, 2.5, 10); // spadek ceny o ~17%
-        buyer.update(cheapOffer); // symulacja powiadomienia o nowej ofercie
+        ProductOffer cheapOffer = new ProductOffer(chleb, 2.5, 10); 
+        buyer.update(cheapOffer); 
 
         assertTrue(buyer.getPurchaseHistory().stream().anyMatch(log -> log.contains("Chleb")));
     }
@@ -88,7 +86,7 @@ class BuyerTest {
 
     @Test
     void testUpdateInflationChangesState() {
-        buyer.update(0.07); // 7% inflacja
+        buyer.update(0.07); 
         assertEquals(0.07, buyer.currentInflation, 0.0001);
     }
 

@@ -13,13 +13,12 @@ class CentralBankTest {
 
     @BeforeEach
     void setUp() {
-        bank = new CentralBank(0.05, false); // Inflacja początkowa: 5%
-        seller = new Seller(0.1, false); // Marża: 10%
+        bank = new CentralBank(0.05, false); 
+        seller = new Seller(0.1, false); 
         product = new Product("Chleb", Product.Type.NECESSITY, 2.0,  3);
-        seller.addProductOffer(product, 100); // 100 sztuk po 2.20 (koszt 2.0 + 10% marży)
+        seller.addProductOffer(product, 100); 
     }
 
-    // --- TESTY PODSTAWOWE ---
     @Test
     void testInitialInflation() {
         assertEquals(0.05, bank.getInflation(), 0.001);
@@ -31,24 +30,22 @@ class CentralBankTest {
         assertTrue(bank.getHistoricalTaxRevenues().isEmpty()); // Nie ma jeszcze historii
     }
 
-    // --- TESTY REGULACJI INFLACJI ---
     @Test
     void testInflationIncreaseWhenTaxRevenueLow() {
-        bank.setTargetTaxRevenue(1000); // Cel: 1000
+        bank.setTargetTaxRevenue(1000); 
         bank.calculateInflation(List.of(seller), List.of()); // Wpływy będą niskie (~44)
         assertTrue(bank.getInflation() > 0.05, "Inflacja powinna wzrosnąć przy niskich wpływach");
     }
 
     @Test
     void testInflationDecreaseWhenTaxRevenueHigh() {
-        bank.setTargetTaxRevenue(10); // Cel: 10
+        bank.setTargetTaxRevenue(10); 
         bank.calculateInflation(List.of(seller), List.of()); // Wpływy będą wyższe (~44)
         assertTrue(bank.getInflation() < 0.05, "Inflacja powinna spaść przy wysokich wpływach");
     }
 
     @Test
     void testPriceChangeImpactOnInflation() {
-        // Symulacja wzrostu cen produktu o 20%
         ProductOffer offer = seller.getOffers().get(0);
         offer.setPrice(offer.getPrice() * 1.2);
 
@@ -56,10 +53,8 @@ class CentralBankTest {
         assertTrue(bank.getInflation() > 0.05, "Inflacja powinna wzrosnąć przy wzroście cen");
     }
 
-    // --- TESTY STABILNOŚCI ---
     @Test
     void testStabilityCheckWithGoodRevenue() {
-        // Symulacja 5 tur z dobrymi wpływami
         for (int i = 0; i < 5; i++) {
             bank.getHistoricalTaxRevenues().add(bank.getTargetTaxRevenue());
         }
@@ -68,14 +63,12 @@ class CentralBankTest {
 
     @Test
     void testStabilityCheckWithBadRevenue() {
-        // Symulacja 5 tur ze złymi wpływami
         for (int i = 0; i < 5; i++) {
             bank.getHistoricalTaxRevenues().add(bank.getTargetTaxRevenue() * 0.5);
         }
         assertFalse(bank.checkStability(), "System nie powinien być stabilny");
     }
 
-    // --- TESTY OBSERWATORÓW ---
     @Test
     void testObserverNotification() {
         Buyer buyer = new Buyer(100, 10, 0.5);
