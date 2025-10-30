@@ -74,5 +74,5 @@ The project includes unit tests verifying:
 
 ```bash
 git clone https://github.com/olha-yakymenko/java-projects.git
-cd cart
+cd java-projects/cart
 mvn clean test
