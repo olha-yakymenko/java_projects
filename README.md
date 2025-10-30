@@ -52,7 +52,7 @@ Welcome to my **Java Projects Repository**. This repository contains three indep
 
 ### Features
 - Push, pop, and peek for strings
-- - Evaluation of RPN expressions using the Stack
+- Evaluation of RPN expressions using the Stack
 - Handles edge cases like empty stack or invalid expressions
 - SOLID and Clean Code principles applied
 - Unit tests for Stack and RPN calculator
